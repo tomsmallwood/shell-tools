@@ -36,13 +36,23 @@ update_env_tools() {
 }
 
 bashtoolssetup() {
-  if [ ! -f ~/.env-tools-setup.sh ]; then
-    cp ./env-tools-setup.sh ~/
+  if echo $SHELL | grep -q 'zsh'; then
+    RCFILE="$HOME/.zshrc"
+  elif echo $SHELL | grep -q 'bash'; then
+    RCFILE="$HOME/.bashrc"
   fi
 
-  source_string="source ~/.env-tools-setup.sh"
+  if [ ! -f ~/.env-tools-setup.sh ]; then
+    cp ./.env-tools-setup.sh ~/
+    echo "copied new .env-tools-setup"
+  fi
 
-  if [ -z $(grep "$source_string" "$HOME/.profile") ]; then echo "$source_string" >> "$HOME/.profile"; fi
+  source_string="source $HOME/.env-tools-setup.sh"
+
+  if [ -z $(grep "$source_string" "$RCFILE") ]; then
+    echo "$source_string" >> "$RCFILE";
+    echo "added source string to $RCFILE"
+  fi
 }
 
 bashtoolssetup
