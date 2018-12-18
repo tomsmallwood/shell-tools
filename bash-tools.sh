@@ -35,6 +35,18 @@ update_env_tools() {
   source $bashtoolspath
 }
 
+bashtoolssetup() {
+  if [ ! -f ~/.env-tools-setup.sh ]; then
+    cp ./env-tools-setup.sh ~/
+  fi
+
+  source_string="source ~/.env-tools-setup.sh"
+
+  if [ -z $(grep "$source_string" "$HOME/.profile") ]; then echo "$source_string" >> "$HOME/.profile"; fi
+}
+
+bashtoolssetup
+
 # bash functions below
 bashedit() {
   if [ $# -eq 0 ]
